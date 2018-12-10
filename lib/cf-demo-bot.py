@@ -11,13 +11,13 @@ def run_command(full_command):
         sys.exit(1)
     return b''.join(output).strip().decode()  # only save stdout into output, ignore stderr
 
+def main():
 
     pipeline = os.getenv('PIPELINE')
 
-
-def main():
-    base_command = 'codefresh run'
-    output = run_command(' '.join([base_command, pipeline]))
+    codefresh_command = 'codefresh run'
+    
+    output = run_command(' '.join([codefresh_command, pipeline]))
     print(output)
 
 
