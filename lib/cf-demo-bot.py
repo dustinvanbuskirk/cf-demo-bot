@@ -11,7 +11,7 @@ def run_command(full_command):
 
 
 def main(command):
-    base_command = 'codefresh'
+    base_command = 'codefresh run'
     output = run_command(' '.join([base_command, command]))
     print(output)
 
