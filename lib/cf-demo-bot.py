@@ -15,11 +15,11 @@ def run_command(full_command):
 def main():
 
     pipeline = os.getenv('PIPELINE')
-    branch = os.getenv('BRANCH')
+    branch = '-b {}'.format(os.getenv('BRANCH'))
 
     codefresh_command = 'codefresh run'
     
-    output = run_command(' '.join([codefresh_command, pipeline, '-b {branch}']))
+    output = run_command(' '.join([codefresh_command, pipeline, branch]))
     print(output)
 
 
