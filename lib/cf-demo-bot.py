@@ -52,7 +52,7 @@ def main():
     output = run_command('git checkout master')
     print(output)
 
-    output = run_command('git checkout pull')
+    output = run_command('git pull')
     print(output)
 
     # Create branch
