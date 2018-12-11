@@ -22,6 +22,7 @@ def main():
 
     # pipeline = os.getenv('PIPELINE')
     branch = '-b {}'.format(os.getenv('BRANCH'))
+    github_token = os.getenv('GITHUB_TOKEN')
 
     # codefresh_command = 'codefresh run'
     
@@ -47,6 +48,16 @@ def main():
     resort = random.choice(resorts)
     code_friendly_resort = resort.replace(' ', '-').lower()
 
+    # Clean directory
+
+    output = run_command('rm -rf /codefresh/volume/example-voting-app')
+    print(output)
+
+    # Clone repository
+
+    output = run_command('git clone https://salesdemocf:{}@github.com/dustinvanbuskirk/example-voting-app.git /codefresh/volume/example-voting-app'.format(github_token))
+    print(output)
+
     # Configure git
 
     output = run_command('git config --global user.email "cfsalesdemo@gmail.com"')
@@ -54,11 +65,7 @@ def main():
 
     # Checkout master and pull
 
-    output = run_command('git checkout master')
-    print(output)
-
-    output = run_command('git pull')
-    print(output)
+    os.chdir('/codefresh/volume/example-voting-app')
 
     # Create branch
 
