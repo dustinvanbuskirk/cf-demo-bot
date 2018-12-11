@@ -79,12 +79,12 @@ def main():
 
     for line in fileinput.input(['tests/selenium/test_app.py'], inplace=True):
         if line.strip().startswith('option_a = '):
-            line = 'option_a = "{}"\n'.format(place)
+            line = '    option_a = "{}"\n'.format(place)
         sys.stdout.write(line)
 
     for line in fileinput.input(['tests/selenium/test_app.py'], inplace=True):
         if line.strip().startswith('option_b = '):
-            line = 'option_b = "{}"\n'.format(resort)
+            line = '    option_b = "{}"\n'.format(resort)
         sys.stdout.write(line)
 
     # Update Vote
@@ -96,7 +96,7 @@ def main():
 
     for line in fileinput.input(['vote/app.py'], inplace=True):
         if line.strip().startswith('option_b = '):
-            line = 'option_b = os.getenv(\'OPTION_B\', "{}")\n'.format(resort)
+            line = 'option_b = os.getenv(\'OPTION_B\', "{}"\n)'.format(resort)
         sys.stdout.write(line)
 
     # Create commit
