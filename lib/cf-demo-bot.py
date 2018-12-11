@@ -2,6 +2,7 @@ import os
 import sys
 import subprocess
 import random
+import fileinput
 from github import Github
 
 
@@ -13,8 +14,8 @@ def run_command(full_command):
         sys.exit(1)
     return b''.join(output).strip().decode()  # only save stdout into output, ignore stderr
 
-def pr_merge(github_token):
-    g = Github(github_token)
+# def pr_merge(github_token):
+#     g = Github(github_token)
 
 
 def main():
@@ -47,35 +48,64 @@ def main():
     code_friendly_resort = resort.replace(' ', '-').lower()
 
     # Create branch
-    run_command = 'git checkout -b {}-or-{}'.format(code_friendly_place, code_friendly_resort)
 
-    # Update Vote A
-    update_vote_a
+    branch = '{}-or-{}'.format(code_friendly_place, code_friendly_resort)
+    
+    output = run_command('git checkout -b {}'.format(branch))
+    print(output)
 
-    # Update Vote B
-    update_vote_b
+    # Update Tests
 
-    create_commit
+    for line in fileinput.input(['tests/selenium/test_app.py'], inplace=True):
+        if line.strip().startswith('option_a = '):
+            line = 'option_a = "{}"\n'.format(place)
+        sys.stdout.write(line)
 
+    for line in fileinput.input(['tests/selenium/test_app.py'], inplace=True):
+        if line.strip().startswith('option_b = '):
+            line = 'option_b = "{}"\n'.format(resort)
+        sys.stdout.write(line)
 
+    # Update Vote
 
-    push_commit
+    for line in fileinput.input(['vote/app.py'], inplace=True):
+        if line.strip().startswith('option_a = '):
+            line = 'option_a = os.getenv(\'OPTION_A\', "{}"\n)'.format(place)
+        sys.stdout.write(line)
 
-    create_pull_request
+    for line in fileinput.input(['vote/app.py'], inplace=True):
+        if line.strip().startswith('option_b = '):
+            line = 'option_b = os.getenv(\'OPTION_B\', "{}")\n'.format(resort)
+        sys.stdout.write(line)
 
-    get_pull_request_build_id
+    # Create commit
+    output = run_command('git commit -am "update for {}"'.format(branch))
+    print(output)
 
-    wait_for_build_completion
+    # Push commit
 
-    merge_pull_request
+    output = run_command('git push --set-upstream origin {}'.format(branch))
+    print(output)
 
-    create_release
+    # Create pull request
 
-    get_release_build_id
+    # push_commit
 
-    wait_for_build_completion
+    # create_pull_request
 
-    trigger_new_deployment
+    # get_pull_request_build_id
+
+    # wait_for_build_completion
+
+    # merge_pull_request
+
+    # create_release
+
+    # get_release_build_id
+
+    # wait_for_build_completion
+
+    # trigger_new_deployment
 
 
 if __name__ == "__main__":
