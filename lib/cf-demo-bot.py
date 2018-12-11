@@ -64,9 +64,14 @@ def main():
     output = run_command('git config --global user.email "cfsalesdemo@gmail.com"')
     print(output)
 
-    # Checkout master and pull
+    # Change working directory
 
     os.chdir('/codefresh/volume/example-voting-app')
+
+    # Clean remote branches
+
+    output = run_command('git branch -r | grep REMOTE_NAME/ | grep -v \'master$\' | grep -v HEAD| cut -d/ -f2 | while read line; do git push REMOTE_NAME :$line; done;')
+    print(output)
 
     # Create branch
 
