@@ -137,18 +137,7 @@ def main():
         except:
             pass
 
-    # wait_for_build_completion
-
-    # merge_pull_request
-
     # create_release
-
-    # get_release_build_id
-
-    # wait_for_build_completion
-
-    # trigger_new_deployment
-
 
 if __name__ == "__main__":
     main()
