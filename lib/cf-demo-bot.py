@@ -47,6 +47,11 @@ def main():
     resort = random.choice(resorts)
     code_friendly_resort = resort.replace(' ', '-').lower()
 
+    # Configure git
+
+    output = run_command('git config --global user.email "cfsalesdemo@gmail.com"')
+    print(output)
+
     # Checkout master and pull
 
     output = run_command('git checkout master')
