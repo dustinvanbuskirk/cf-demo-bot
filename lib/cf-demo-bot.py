@@ -1,8 +1,9 @@
+import fileinput
 import os
+import random
 import sys
 import subprocess
-import random
-import fileinput
+import time
 from github import Github
 
 
@@ -107,21 +108,34 @@ def main():
     output = run_command('git push --set-upstream origin {}'.format(branch))
     print(output)
 
+    # Sleep
+
+    time.sleep(30)
+
     # PyGitHub Auth
 
     g = Github(github_token)
 
-    # Create pull request
+    # Set repo
 
     repo = g.get_repo('dustinvanbuskirk/example-voting-app')
 
-    create_pull = repo.create_pull(title='Pull Request from Demofresh Bot', head=branch, base='master', body='Automated Pull Request', maintainer_can_modify=True)
+    # Create pull request
 
-    print(create_pull)
+    create_pull_request = repo.create_pull(title='Pull Request from Demofresh Bot', head=branch, base='master', body='Automated Pull Request', maintainer_can_modify=True)
 
     # get_pull_request_build_id
 
-    #repo.merge(state='open', sort='created', base='master')
+    pull_request = repo.get_pull(create_pull_request.number)
+
+    merge_pull_request = None
+    while merge_pull_request is None:
+        try:
+            print('Waiting 30 seconds for Pull Request builds')
+            time.sleep(30)
+            merge_pull_request = pull_request.merge(commit_title='Freshbot Demo Automation', commit_message='Committed by Codefresh Freshbot Demo', merge_method='merge')
+        except:
+            pass
 
     # wait_for_build_completion
 
