@@ -70,7 +70,7 @@ def main():
 
     # Clean remote branches
 
-    output = run_command('git branch -r | grep REMOTE_NAME/ | grep -v \'master$\' | grep -v HEAD| cut -d/ -f2 | while read line; do git push REMOTE_NAME :$line; done;')
+    output = run_command('git branch -r | grep origin/ | grep -v \'master$\' | grep -v HEAD| cut -d/ -f2 | while read line; do git push origin :$line; done;')
     print(output)
 
     # Create branch
