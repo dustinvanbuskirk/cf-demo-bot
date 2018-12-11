@@ -20,13 +20,13 @@ def run_command(full_command):
 
 def main():
 
-    pipeline = os.getenv('PIPELINE')
+    # pipeline = os.getenv('PIPELINE')
     branch = '-b {}'.format(os.getenv('BRANCH'))
 
-    codefresh_command = 'codefresh run'
+    # codefresh_command = 'codefresh run'
     
-    output = run_command(' '.join([codefresh_command, pipeline, branch]))
-    print(output)
+    # output = run_command(' '.join([codefresh_command, pipeline, branch]))
+    # print(output)
 
     places = [
         'Seattle',
@@ -47,10 +47,18 @@ def main():
     resort = random.choice(resorts)
     code_friendly_resort = resort.replace(' ', '-').lower()
 
+    # Checkout master and pull
+
+    output = run_command('git checkout master')
+    print(output)
+
+    output = run_command('git checkout pull')
+    print(output)
+
     # Create branch
 
     branch = '{}-or-{}'.format(code_friendly_place, code_friendly_resort)
-    
+   
     output = run_command('git checkout -b {}'.format(branch))
     print(output)
 
