@@ -107,13 +107,21 @@ def main():
     output = run_command('git push --set-upstream origin {}'.format(branch))
     print(output)
 
+    # PyGitHub Auth
+
+    g = Github(github_token)
+
     # Create pull request
 
-    # push_commit
+    repo = g.get_repo('dustinvanbuskirk/example-voting-app')
 
-    # create_pull_request
+    create_pull = repo.create_pull(title='Pull Request from Demofresh Bot', head=branch, base='master', body='Automated Pull Request', maintainer_can_modify=True)
+
+    print(create_pull)
 
     # get_pull_request_build_id
+
+    #repo.merge(state='open', sort='created', base='master')
 
     # wait_for_build_completion
 
