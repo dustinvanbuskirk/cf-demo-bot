@@ -76,6 +76,12 @@ def main():
     except:
         pass
 
+    try:
+        output = run_command('git branch | grep -v "master" | xargs git branch -D')
+        print(output)
+    except:
+        pass
+
     # Create branch
 
     branch = '{}-or-{}'.format(code_friendly_place, code_friendly_resort)
