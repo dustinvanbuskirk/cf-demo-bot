@@ -35,7 +35,12 @@ def main():
         'New York',
         'Austin',
         'Chicago',
-        'Denver'
+        'Denver',
+        'San Francisco',
+        'Boston',
+        'Miami',
+        'New Orleans',
+        'Portland'
     ]
     place = random.choice(places)
     code_friendly_place = place.replace(' ', '-').lower()
@@ -44,7 +49,11 @@ def main():
         'Disney Land',
         'Disney World',
         'Six Flags',
-        'Universal'
+        'Universal',
+        'Hershey Park',
+        'Cedar Point',
+        'Kings Island',
+        'Epcot'
     ]
     resort = random.choice(resorts)
     code_friendly_resort = resort.replace(' ', '-').lower()
