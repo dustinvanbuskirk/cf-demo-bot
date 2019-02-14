@@ -25,6 +25,14 @@ def main():
     branch = '-b {}'.format(os.getenv('BRANCH'))
     github_token = os.getenv('GITHUB_TOKEN')
 
+    # Configure git
+
+    output = run_command('git config --global user.email "cfsalesdemo@gmail.com"')
+    print(output)
+
+    output = run_command('git config --global user.name "Demofresh Bot"')
+    print(output)
+
     # codefresh_command = 'codefresh run'
     
     # output = run_command(' '.join([codefresh_command, pipeline, branch]))
@@ -66,11 +74,6 @@ def main():
     # Clone repository
 
     output = run_command('git clone https://salesdemocf:{}@github.com/dustinvanbuskirk/example-voting-app.git /codefresh/volume/example-voting-app'.format(github_token))
-    print(output)
-
-    # Configure git
-
-    output = run_command('git config --global user.email "cfsalesdemo@gmail.com"')
     print(output)
 
     # Change working directory
