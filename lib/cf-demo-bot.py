@@ -73,6 +73,9 @@ def main():
     output = run_command('git config --global user.email "cfsalesdemo@gmail.com"')
     print(output)
 
+    output = run_command('git config --global user.name "Demofresh Bot"')
+    print(output)
+
     # Change working directory
 
     os.chdir('/codefresh/volume/example-voting-app')
@@ -94,7 +97,9 @@ def main():
     # Create branch
 
     branch = '{}-or-{}'.format(code_friendly_place, code_friendly_resort)
-   
+    
+    time.sleep(1)
+
     output = run_command('git checkout -b {}'.format(branch))
     print(output)
 
@@ -156,7 +161,7 @@ def main():
         try:
             print('Waiting 30 seconds for Pull Request builds')
             time.sleep(30)
-            merge_pull_request = pull_request.merge(commit_title='Freshbot Demo Automation', commit_message='Committed by Codefresh Freshbot Demo', merge_method='merge')
+            merge_pull_request = pull_request.merge(commit_title='Demofresh Bot Automation', commit_message='Committed by Demofresh Bot', merge_method='merge')
         except:
             pass
 
