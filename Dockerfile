@@ -7,7 +7,7 @@ RUN apk update && \
     apk add --no-cache \
         git \
         nodejs && \
-    npm install codefresh -g && \
+    npm install codefresh && \
     pip install PyGithub
 
 COPY lib/cf-demo-bot.py /cf-demo-bot.py
