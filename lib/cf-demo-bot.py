@@ -27,7 +27,7 @@ def main():
 
     # Configure git
 
-    output = run_command('git config --global user.email "cfsalesdemo@gmail.com"')
+    output = run_command('git config --global user.email "salesdemocf@gmail.com"')
     print(output)
 
     output = run_command('git config --global user.name "Freshbot"')
@@ -73,7 +73,7 @@ def main():
 
     # Clone repository
 
-    output = run_command('git clone https://salesdemocf:{}@github.com/cfsalesdemo/example-voting-app.git /codefresh/volume/example-voting-app'.format(github_token))
+    output = run_command('git clone https://salesdemocf:{}@github.com/salesdemocf/example-voting-app.git /codefresh/volume/example-voting-app'.format(github_token))
     print(output)
 
     # Change working directory
