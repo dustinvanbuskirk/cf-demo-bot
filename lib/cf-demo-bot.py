@@ -146,29 +146,23 @@ def main():
 
     repo = g.get_repo('salesdemocf/example-voting-app')
 
-    # Create Pull Request
+    # Create pull request
 
     create_pull_request = repo.create_pull(title='Pull Request from Freshbot', head=branch, base='master', body='Freshbot Automated Pull Request', maintainer_can_modify=True)
 
-    # Get Pull Request Mergeable Status
+    # get_pull_request_build_id
 
     pull_request = repo.get_pull(create_pull_request.number)
 
-    mergeable = False
-    while mergeable is False:
+    merge_pull_request = None
+    while merge_pull_request is None:
         try:
-            print('Waiting 30 seconds for Pull Request Status Checks')
+            print('Waiting 30 seconds for Pull Request builds')
             time.sleep(30)
-            pull_request = repo.get_pull(create_pull_request.number)
-            mergeable = pull_request.mergeable
-            print(mergeable)
+            merge_pull_request = pull_request.merge(commit_title='Freshbot Automated Merge', commit_message='Merged by Freshbot', merge_method='merge')
+            print(merge_pull_request)
         except:
             pass
-
-    # Merge Pull Request
-
-    merge_pull_request = pull_request.merge(commit_title='Freshbot Automated Merge', commit_message='Merged by Freshbot', merge_method='merge')
-    print(merge_pull_request)
 
     # create_release
 
