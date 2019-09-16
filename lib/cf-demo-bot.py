@@ -148,7 +148,7 @@ def main():
 
     # Create pull request
 
-    create_pull_request = repo.create_pull(title='Pull Request from Freshbot', head=branch, base='master', body='Freshbot Automated Pull Request', maintainer_can_modify=True)
+    create_pull_request = repo.create_pull(title='Pull Request from Freshbot', head=branch, base='master', body='Automated Pull Request', maintainer_can_modify=True)
 
     # get_pull_request_build_id
 
@@ -159,9 +159,8 @@ def main():
         try:
             print('Waiting 30 seconds for Pull Request builds')
             time.sleep(30)
-            merge_pull_request = pull_request.merge(commit_title='Freshbot Automated Merge', commit_message='Merged by Freshbot', merge_method='merge')
+            merge_pull_request = pull_request.merge(commit_title='Freshbot Demo Automation', commit_message='Committed by Codefresh Freshbot', merge_method='merge')
         except:
-            merge_pull_request = None
             pass
 
     # create_release
