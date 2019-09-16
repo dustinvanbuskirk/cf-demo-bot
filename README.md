@@ -1,2 +1,2 @@
-# cf-demo-bot
-Demo Bot
+# Freshbot
+Your amazing demo companion.

@@ -30,7 +30,7 @@ def main():
     output = run_command('git config --global user.email "cfsalesdemo@gmail.com"')
     print(output)
 
-    output = run_command('git config --global user.name "Demofresh Bot"')
+    output = run_command('git config --global user.name "Freshbot"')
     print(output)
 
     # codefresh_command = 'codefresh run'
@@ -73,7 +73,7 @@ def main():
 
     # Clone repository
 
-    output = run_command('git clone https://salesdemocf:{}@github.com/dustinvanbuskirk/example-voting-app.git /codefresh/volume/example-voting-app'.format(github_token))
+    output = run_command('git clone https://salesdemocf:{}@github.com/cfsalesdemo/example-voting-app.git /codefresh/volume/example-voting-app'.format(github_token))
     print(output)
 
     # Change working directory
@@ -144,11 +144,11 @@ def main():
 
     # Set repo
 
-    repo = g.get_repo('dustinvanbuskirk/example-voting-app')
+    repo = g.get_repo('cfsalesdemo/example-voting-app')
 
     # Create pull request
 
-    create_pull_request = repo.create_pull(title='Pull Request from Demofresh Bot', head=branch, base='master', body='Automated Pull Request', maintainer_can_modify=True)
+    create_pull_request = repo.create_pull(title='Pull Request from Freshbot', head=branch, base='master', body='Automated Pull Request', maintainer_can_modify=True)
 
     # get_pull_request_build_id
 
@@ -159,7 +159,7 @@ def main():
         try:
             print('Waiting 30 seconds for Pull Request builds')
             time.sleep(30)
-            merge_pull_request = pull_request.merge(commit_title='Freshbot Demo Automation', commit_message='Committed by Codefresh Freshbot Demo', merge_method='merge')
+            merge_pull_request = pull_request.merge(commit_title='Freshbot Demo Automation', commit_message='Committed by Codefresh Freshbot', merge_method='merge')
         except:
             pass
 
