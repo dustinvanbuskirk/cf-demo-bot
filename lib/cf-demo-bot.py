@@ -160,8 +160,8 @@ def main():
             print('Waiting 30 seconds for Pull Request builds')
             time.sleep(30)
             merge_pull_request = pull_request.merge(commit_title='Freshbot Automated Merge', commit_message='Merged by Freshbot', merge_method='merge')
-            print(merge_pull_request)
         except:
+            merge_pull_request = None
             pass
 
     # create_release
