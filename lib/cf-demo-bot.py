@@ -144,7 +144,7 @@ def main():
 
     # Set repo
 
-    repo = g.get_repo('cfsalesdemo/example-voting-app')
+    repo = g.get_repo('salesdemocf/example-voting-app')
 
     # Create pull request
 
