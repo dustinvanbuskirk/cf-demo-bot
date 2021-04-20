@@ -148,7 +148,7 @@ def main():
 
     # Create pull request
 
-    create_pull_request = repo.create_pull(title='Pull Request from Freshbot', head=branch, base='master', body='Automated Pull Request', maintainer_can_modify=True)
+    create_pull_request = repo.create_pull(title='Pull Request from Freshbot', head=branch, base='main', body='Automated Pull Request', maintainer_can_modify=True)
 
     # get_pull_request_build_id
 
