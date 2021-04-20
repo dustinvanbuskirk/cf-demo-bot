@@ -83,13 +83,13 @@ def main():
     # Clean remote branches
 
     try:
-        output = run_command('git branch -r | grep origin/ | grep -v \'master$\' | grep -v HEAD| cut -d/ -f2 | while read line; do git push origin :$line; done;')
+        output = run_command('git branch -r | grep origin/ | grep -v \'main$\' | grep -v HEAD| cut -d/ -f2 | while read line; do git push origin :$line; done;')
         print(output)
     except:
         pass
 
     try:
-        output = run_command('git branch | grep -v "master" | xargs git branch -D')
+        output = run_command('git branch | grep -v "main" | xargs git branch -D')
         print(output)
     except:
         pass
