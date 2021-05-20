@@ -110,14 +110,14 @@ def main():
 
     # Replace lines
 
-    replace_line('tests/selenium/test_app.py', 36, '    option_a = "{}"\n'.format(place))
-    replace_line('tests/selenium/test_app.py', 37, '    option_b = "{}"\n'.format(resort))
+    replace_line('tests/selenium/test_app.py', 34, '    option_a = "{}"\n'.format(place))
+    replace_line('tests/selenium/test_app.py', 35, '    option_b = "{}"\n'.format(resort))
 
-    replace_line('vote/app.py', 9, 'option_a = os.getenv(\'OPTION_A\', "{}")\n'.format(place))
-    replace_line('vote/app.py', 10, 'option_a = os.getenv(\'OPTION_B\', "{}")\n'.format(resort))
+    replace_line('vote/app.py', 7, 'option_a = os.getenv(\'OPTION_A\', "{}")\n'.format(place))
+    replace_line('vote/app.py', 8, 'option_a = os.getenv(\'OPTION_B\', "{}")\n'.format(resort))
 
-    replace_line('result/views/index.html', 24, '            <div class="label">{}</div>'.format(place))
-    replace_line('result/views/index.html', 29, '            <div class="label">{}</div>'.format(resort))
+    replace_line('result/views/index.html', 22, '            <div class="label">{}</div>'.format(place))
+    replace_line('result/views/index.html', 27, '            <div class="label">{}</div>'.format(resort))
 
     # Create commit
     output = run_command('git commit -am "update for {}"'.format(branch))
