@@ -31,6 +31,7 @@ def main():
     # pipeline = os.getenv('PIPELINE')
     branch = '-b {}'.format(os.getenv('BRANCH'))
     github_token = os.getenv('GITHUB_TOKEN')
+    revision = os.getenv('REVISION')
 
     # Configure git
 
@@ -158,6 +159,12 @@ def main():
             pass
 
     # create_release
+
+    time.sleep(5)
+
+    branch = g.get_repo('salesdemocf/example-voting-app').get_branch('main')
+
+    repo.create_git_tag_and_release(tag='4.0.{}'.format(revision), tag_message='Freshbot Demo Automation', object=branch.commit.sha, type='sha', release_name='{} vs. {}'.format(place, resort), release_message='Freshbot Demo Automation', prerelease=False)
 
 if __name__ == "__main__":
     main()
