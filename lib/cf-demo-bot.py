@@ -18,25 +18,27 @@ def run_command(full_command):
 # def pr_merge(github_token):
 #     g = Github(github_token)
 
+def replace_line(file_name, line_num, text):
+    lines = open(file_name, 'r').readlines()
+    lines[line_num] = text
+    out = open(file_name, 'w')
+    out.writelines(lines)
+    out.close()
+
 
 def main():
 
-    # pipeline = os.getenv('PIPELINE')
-    branch = '-b {}'.format(os.getenv('BRANCH'))
+    target_branch = os.getenv('TARGET_BRANCH')
     github_token = os.getenv('GITHUB_TOKEN')
+    revision = os.getenv('REVISION')
 
     # Configure git
 
-    output = run_command('git config --global user.email "cfsalesdemo@gmail.com"')
+    output = run_command('git config --global user.email "salesdemocf@gmail.com"')
     print(output)
 
-    output = run_command('git config --global user.name "Demofresh Bot"')
+    output = run_command('git config --global user.name "Freshbot"')
     print(output)
-
-    # codefresh_command = 'codefresh run'
-    
-    # output = run_command(' '.join([codefresh_command, pipeline, branch]))
-    # print(output)
 
     places = [
         'Seattle',
@@ -73,7 +75,7 @@ def main():
 
     # Clone repository
 
-    output = run_command('git clone https://salesdemocf:{}@github.com/dustinvanbuskirk/example-voting-app.git /codefresh/volume/example-voting-app'.format(github_token))
+    output = run_command('git clone https://salesdemocf:{}@github.com/salesdemocf/example-voting-app.git /codefresh/volume/example-voting-app'.format(github_token))
     print(output)
 
     # Change working directory
@@ -83,55 +85,42 @@ def main():
     # Clean remote branches
 
     try:
-        output = run_command('git branch -r | grep origin/ | grep -v \'master$\' | grep -v HEAD| cut -d/ -f2 | while read line; do git push origin :$line; done;')
+        output = run_command('git branch -r | grep origin/ | grep -v \'main$\' | grep -v HEAD| cut -d/ -f2 | while read line; do git push origin :$line; done;')
         print(output)
     except:
         pass
 
     try:
-        output = run_command('git branch | grep -v "master" | xargs git branch -D')
+        output = run_command('git branch | grep -v "main" | xargs git branch -D')
         print(output)
     except:
         pass
 
     # Create branch
 
-    branch = '{}-or-{}'.format(code_friendly_place, code_friendly_resort)
+    feature_branch = '{}-or-{}'.format(code_friendly_place, code_friendly_resort)
    
-    output = run_command('git checkout -b {}'.format(branch))
+    output = run_command('git checkout -b {}'.format(feature_branch))
     print(output)
 
-    # Update Tests
+    # Replace lines
 
-    for line in fileinput.input(['tests/selenium/test_app.py'], inplace=True):
-        if line.strip().startswith('option_a = '):
-            line = '    option_a = "{}"\n'.format(place)
-        sys.stdout.write(line)
+    replace_line('tests/selenium/test_app.py', 34, '    option_a = "{}"\n'.format(place))
+    replace_line('tests/selenium/test_app.py', 35, '    option_b = "{}"\n'.format(resort))
 
-    for line in fileinput.input(['tests/selenium/test_app.py'], inplace=True):
-        if line.strip().startswith('option_b = '):
-            line = '    option_b = "{}"\n'.format(resort)
-        sys.stdout.write(line)
+    replace_line('vote/app.py', 7, 'option_a = os.getenv(\'OPTION_A\', "{}")\n'.format(place))
+    replace_line('vote/app.py', 8, 'option_b = os.getenv(\'OPTION_B\', "{}")\n'.format(resort))
 
-    # Update Vote
-
-    for line in fileinput.input(['vote/app.py'], inplace=True):
-        if line.strip().startswith('option_a = '):
-            line = 'option_a = os.getenv(\'OPTION_A\', "{}")\n'.format(place)
-        sys.stdout.write(line)
-
-    for line in fileinput.input(['vote/app.py'], inplace=True):
-        if line.strip().startswith('option_b = '):
-            line = 'option_b = os.getenv(\'OPTION_B\', "{}")\n'.format(resort)
-        sys.stdout.write(line)
+    replace_line('result/views/index.html', 22, '            <div class="label">{}</div>\n'.format(place))
+    replace_line('result/views/index.html', 27, '            <div class="label">{}</div>\n'.format(resort))
 
     # Create commit
-    output = run_command('git commit -am "update for {}"'.format(branch))
+    output = run_command('git commit -am "update for {}"'.format(feature_branch))
     print(output)
 
     # Push commit
 
-    output = run_command('git push --set-upstream origin {}'.format(branch))
+    output = run_command('git push --set-upstream origin {}'.format(feature_branch))
     print(output)
 
     # Sleep
@@ -144,11 +133,11 @@ def main():
 
     # Set repo
 
-    repo = g.get_repo('dustinvanbuskirk/example-voting-app')
+    repo = g.get_repo('salesdemocf/example-voting-app')
 
     # Create pull request
 
-    create_pull_request = repo.create_pull(title='Pull Request from Demofresh Bot', head=branch, base='master', body='Automated Pull Request', maintainer_can_modify=True)
+    create_pull_request = repo.create_pull(title='Pull Request from Freshbot', head=feature_branch, base=target_branch, body='Automated Pull Request', maintainer_can_modify=True)
 
     # get_pull_request_build_id
 
@@ -159,11 +148,17 @@ def main():
         try:
             print('Waiting 30 seconds for Pull Request builds')
             time.sleep(30)
-            merge_pull_request = pull_request.merge(commit_title='Freshbot Demo Automation', commit_message='Committed by Codefresh Freshbot Demo', merge_method='merge')
+            merge_pull_request = pull_request.merge(commit_title='Freshbot Demo Automation', commit_message='Committed by Codefresh Freshbot', merge_method='merge')
         except:
             pass
 
     # create_release
+
+    time.sleep(5)
+
+    branch_data = g.get_repo('salesdemocf/example-voting-app').get_branch(target_branch)
+
+    repo.create_git_tag_and_release(tag='4.0.{}'.format(revision), tag_message='Freshbot Demo Automation', object=branch_data.commit.sha, type='sha', release_name='{} vs. {}'.format(place, resort), release_message='Freshbot Demo Automation', prerelease=False)
 
 if __name__ == "__main__":
     main()
