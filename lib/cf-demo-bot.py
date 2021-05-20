@@ -116,8 +116,8 @@ def main():
     replace_line('vote/app.py', 7, 'option_a = os.getenv(\'OPTION_A\', "{}")\n'.format(place))
     replace_line('vote/app.py', 8, 'option_a = os.getenv(\'OPTION_B\', "{}")\n'.format(resort))
 
-    replace_line('result/views/index.html', 22, '            <div class="label">{}</div>'.format(place))
-    replace_line('result/views/index.html', 27, '            <div class="label">{}</div>'.format(resort))
+    replace_line('result/views/index.html', 22, '            <div class="label">{}</div>\n'.format(place))
+    replace_line('result/views/index.html', 27, '            <div class="label">{}</div>\n'.format(resort))
 
     # Create commit
     output = run_command('git commit -am "update for {}"'.format(branch))
