@@ -114,7 +114,7 @@ def main():
     replace_line('tests/selenium/test_app.py', 35, '    option_b = "{}"\n'.format(resort))
 
     replace_line('vote/app.py', 7, 'option_a = os.getenv(\'OPTION_A\', "{}")\n'.format(place))
-    replace_line('vote/app.py', 8, 'option_a = os.getenv(\'OPTION_B\', "{}")\n'.format(resort))
+    replace_line('vote/app.py', 8, 'option_b = os.getenv(\'OPTION_B\', "{}")\n'.format(resort))
 
     replace_line('result/views/index.html', 22, '            <div class="label">{}</div>\n'.format(place))
     replace_line('result/views/index.html', 27, '            <div class="label">{}</div>\n'.format(resort))
