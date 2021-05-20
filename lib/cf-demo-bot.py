@@ -28,8 +28,7 @@ def replace_line(file_name, line_num, text):
 
 def main():
 
-    # pipeline = os.getenv('PIPELINE')
-    branch = '-b {}'.format(os.getenv('BRANCH'))
+    target_branch = os.getenv('BRANCH')
     github_token = os.getenv('GITHUB_TOKEN')
     revision = os.getenv('REVISION')
 
@@ -40,11 +39,6 @@ def main():
 
     output = run_command('git config --global user.name "Freshbot"')
     print(output)
-
-    # codefresh_command = 'codefresh run'
-    
-    # output = run_command(' '.join([codefresh_command, pipeline, branch]))
-    # print(output)
 
     places = [
         'Seattle',
@@ -104,9 +98,9 @@ def main():
 
     # Create branch
 
-    branch = '{}-or-{}'.format(code_friendly_place, code_friendly_resort)
+    feature_branch = '{}-or-{}'.format(code_friendly_place, code_friendly_resort)
    
-    output = run_command('git checkout -b {}'.format(branch))
+    output = run_command('git checkout -b {}'.format(feature_branch))
     print(output)
 
     # Replace lines
@@ -121,12 +115,12 @@ def main():
     replace_line('result/views/index.html', 27, '            <div class="label">{}</div>\n'.format(resort))
 
     # Create commit
-    output = run_command('git commit -am "update for {}"'.format(branch))
+    output = run_command('git commit -am "update for {}"'.format(feature_branch))
     print(output)
 
     # Push commit
 
-    output = run_command('git push --set-upstream origin {}'.format(branch))
+    output = run_command('git push --set-upstream origin {}'.format(feature_branch))
     print(output)
 
     # Sleep
@@ -143,7 +137,7 @@ def main():
 
     # Create pull request
 
-    create_pull_request = repo.create_pull(title='Pull Request from Freshbot', head=branch, base='main', body='Automated Pull Request', maintainer_can_modify=True)
+    create_pull_request = repo.create_pull(title='Pull Request from Freshbot', head=feature_branch, base=target_branch, body='Automated Pull Request', maintainer_can_modify=True)
 
     # get_pull_request_build_id
 
@@ -162,9 +156,9 @@ def main():
 
     time.sleep(5)
 
-    branch = g.get_repo('salesdemocf/example-voting-app').get_branch('main')
+    branch_data = g.get_repo('salesdemocf/example-voting-app').get_branch(target_branch)
 
-    repo.create_git_tag_and_release(tag='4.0.{}'.format(revision), tag_message='Freshbot Demo Automation', object=branch.commit.sha, type='sha', release_name='{} vs. {}'.format(place, resort), release_message='Freshbot Demo Automation', prerelease=False)
+    repo.create_git_tag_and_release(tag='4.0.{}'.format(revision), tag_message='Freshbot Demo Automation', object=branch_data.commit.sha, type='sha', release_name='{} vs. {}'.format(place, resort), release_message='Freshbot Demo Automation', prerelease=False)
 
 if __name__ == "__main__":
     main()
