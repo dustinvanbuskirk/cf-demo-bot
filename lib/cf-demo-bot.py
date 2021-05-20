@@ -18,6 +18,13 @@ def run_command(full_command):
 # def pr_merge(github_token):
 #     g = Github(github_token)
 
+def replace_line(file_name, line_num, text):
+    lines = open(file_name, 'r').readlines()
+    lines[line_num] = text
+    out = open(file_name, 'w')
+    out.writelines(lines)
+    out.close()
+
 
 def main():
 
@@ -101,29 +108,16 @@ def main():
     output = run_command('git checkout -b {}'.format(branch))
     print(output)
 
-    # Update Tests
+    # Replace lines
 
-    for line in fileinput.input(['tests/selenium/test_app.py'], inplace=True):
-        if line.strip().startswith('option_a = '):
-            line = '    option_a = "{}"\n'.format(place)
-        sys.stdout.write(line)
+    replace_line('tests/selenium/test_app.py', 36, '    option_a = "{}"\n'.format(place))
+    replace_line('tests/selenium/test_app.py', 37, '    option_b = "{}"\n'.format(resort))
 
-    for line in fileinput.input(['tests/selenium/test_app.py'], inplace=True):
-        if line.strip().startswith('option_b = '):
-            line = '    option_b = "{}"\n'.format(resort)
-        sys.stdout.write(line)
+    replace_line('vote/app.py', 9, 'option_a = os.getenv(\'OPTION_A\', "{}")\n'.format(place))
+    replace_line('vote/app.py', 10, 'option_a = os.getenv(\'OPTION_B\', "{}")\n'.format(resort))
 
-    # Update Vote
-
-    for line in fileinput.input(['vote/app.py'], inplace=True):
-        if line.strip().startswith('option_a = '):
-            line = 'option_a = os.getenv(\'OPTION_A\', "{}")\n'.format(place)
-        sys.stdout.write(line)
-
-    for line in fileinput.input(['vote/app.py'], inplace=True):
-        if line.strip().startswith('option_b = '):
-            line = 'option_b = os.getenv(\'OPTION_B\', "{}")\n'.format(resort)
-        sys.stdout.write(line)
+    replace_line('result/views/index.html', 24, '            <div class="label">{}</div>'.format(place))
+    replace_line('result/views/index.html', 29, '            <div class="label">{}</div>'.format(resort))
 
     # Create commit
     output = run_command('git commit -am "update for {}"'.format(branch))
