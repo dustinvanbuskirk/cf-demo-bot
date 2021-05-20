@@ -28,7 +28,7 @@ def replace_line(file_name, line_num, text):
 
 def main():
 
-    target_branch = os.getenv('BRANCH')
+    target_branch = os.getenv('TARGET_BRANCH')
     github_token = os.getenv('GITHUB_TOKEN')
     revision = os.getenv('REVISION')
 
