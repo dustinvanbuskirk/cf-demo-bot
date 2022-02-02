@@ -1,3 +1,3 @@
 # cf-demo-bot
 
-Test
+Run
